@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	
+	<!-- selectUser -->
+	<select id="selectUser" resultType="userVo">
+	<![CDATA[
+			select no, hp, point 
+			from users where hp = #{hp}
+		]]>
+	</select>
+	
+	<!-- savePoint -->
+	<update id="savePoint">
+	<![CDATA[
+		update users set point = #{point}
+		where no = #{no}
+	]]>
+	</update>
+	
+	<!-- userInsert -->
+	<insert id="userInsert">
+	<![CDATA[
+		insert into users 
+		values(null, #{hp}, #{point})
+	]]>
+	<selectKey keyProperty="no" resultType="int" order="AFTER">
+			<![CDATA[
+				select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<!-- getPoint -->
+	<select id="getPoint" parameterType="string" resultType="userVo">
+	<![CDATA[
+		select no, point, right(hp, 4)hp
+		from users
+		where hp = #{hp}
+	]]>
+	</select>
+	
+	
+</mapper>

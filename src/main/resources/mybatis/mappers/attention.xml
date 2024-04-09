@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attention">
+
+
+	<select id="select" parameterType="String" resultType="com.javaex.vo.AttentionCartVo">
+		<![CDATA[
+				select category, sum(price * count) totalPrice, sum(s.count) totalCount
+				from product p, sales s, bill b
+				where p.no = s.product_no and s.order_no=b.order_no
+				and b.order_date=#{order_date}
+				group by category,order_date
+		]]>
+	</select>
+
+
+
+	<select id="coffeeSelect" parameterType="com.javaex.vo.AttentionCartVo" resultType="com.javaex.vo.AttentionCartVo">
+		<![CDATA[
+				 select name productName, sum(price*count) totalPrice, sum(count) totalCount, order_date
+				from sales s, product p, bill b
+				where s.product_no = p.no
+				and category = #{category}
+				and b.order_no = s.order_no
+				and order_date = #{selectedDate}
+				group by name, order_date;
+		]]>
+	</select>
+
+</mapper>
